@@ -68,8 +68,9 @@ def customer_registration():
             with open("./Database/CUSTOMER_HISTORY.txt", "r") as file:
                 for line in file:
                     nm_c += 1
+                    l_d = line.split()
                     if nm_c == cnt+1:
-                        current_customer = line.split()
+                        current_customer = l_d
             break
         else:
             print("Invalid input")

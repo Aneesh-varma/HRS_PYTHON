@@ -1,10 +1,11 @@
 import sqlite3 as sql
 
-conn = sql.connect("./Database/rooms.db")
-c = conn.cursor()
 
 def room_management():
     print(" ")
+    c_r_charges = 0
+    conn = sql.connect("./Database/rooms.db")
+    c = conn.cursor()
     while True:
         print(" ")
         print("PLEASE CHOOSE YOU ROOM TYPE")
@@ -32,14 +33,18 @@ def room_management():
                 for i in c.fetchall():
                     if r_b == i[0]:
                         print("Available", r_b)
+                        rc_d = int(input("MENTION NO OF NIGHTS YOU WANT TO STAY: "))
                         r_c = input("TYPE BOOK (to give details) TO CHECK-IN: ")
                         if r_c == "BOOK":
                             print("CHECK-IN SUCCESSFUL")
                             c_suc = True
                             r_a = True
                             c.execute("UPDATE suite_rooms SET availability = False WHERE room_no = ?",(r_b,))
-                            return r_b
-                            break
+                            c_r_charges = 6000*rc_d
+                            conn.commit()
+                            conn.close()
+                            return "suite_rooms",r_b,c_r_charges
+
                         else:
                             print("CHECK-IN FAILED")
                             print("CHECK-IN FAILED")
@@ -79,13 +84,17 @@ def room_management():
                 for i in c.fetchall():
                     if r_b == i[0]:
                         print("Available", r_b)
+                        rc_d = int(input("MENTION NO OF NIGHTS YOU WANT TO STAY: "))
                         r_c = input("TYPE BOOK (to give details) TO CHECK-IN: ")
                         if r_c == "BOOK":
                             print("CHECK-IN SUCCESSFUL")
                             c_suc = True
                             r_a = True
                             c.execute("UPDATE two_seater SET availability = False WHERE room_no = ?", (r_b,))
-                            return r_b
+                            c_r_charges = 2000 * rc_d
+                            conn.commit()
+                            conn.close()
+                            return "two_seater",r_b,c_r_charges
                             break
                         else:
                             print("CHECK-IN FAILED")
@@ -124,13 +133,17 @@ def room_management():
                 for i in c.fetchall():
                     if r_b == i[0]:
                         print("Available", r_b)
+                        rc_d = int(input("MENTION NO OF NIGHTS YOU WANT TO STAY: "))
                         r_c = input("TYPE BOOK (to give details) TO CHECK-IN: ")
                         if r_c == "BOOK":
                             print("CHECK-IN SUCCESSFUL")
                             c_suc = True
                             r_a = True
                             c.execute("UPDATE family_room SET availability = False WHERE room_no = ?", (r_b,))
-                            return r_b
+                            c_r_charges = rc_d*4000
+                            conn.commit()
+                            conn.close()
+                            return "family_room",r_b,c_r_charges
                             break
                         else:
                             print("CHECK-IN FAILED")
@@ -155,7 +168,8 @@ def room_management():
 
 
 
-room_management()
 
-conn.commit()
-c.close()
+
+
+
+
